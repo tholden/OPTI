@@ -1,4 +1,4 @@
-function opti_Install( OptiFolder, fast )
+function opti_Install_Minimal( OptiFolder, fast )
 %% Installation File for OPTI
 
 %   Copyright (C) 2016 Jonathan Currie (IPL)
