@@ -95,7 +95,10 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         if(nlhs < 1)
             printSolverInfo();
         else
+        {
             plhs[0] = mxCreateString(LM_VERSION);   
+            plhs[1] = mxCreateDoubleScalar(OPTI_VER);
+        }
         return;
     }
 
@@ -207,6 +210,7 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
             iterF.prhs[2] = mxCreateDoubleMatrix(1,1,mxREAL);
             iterF.prhs[3] = mxCreateDoubleMatrix(ndec,1,mxREAL);
         }
+        CheckOptiVersion(prhs[10]);
     }                       
 
     //Create Outputs
@@ -523,10 +527,10 @@ void checkInputs(const mxArray *prhs[], int nrhs, int *conMode)
 
 //Print Solver Information
 void printSolverInfo()
-{    
-    char vbuf[6]; getVSVer(vbuf);    
+{     
     mexPrintf("\n-----------------------------------------------------------\n");
-    mexPrintf(" LEVMAR: Levenberg-Marquardt Nonlinear Least Squares in C/C++ [v%s, Built %s, VS%s]\n",LM_VERSION,__DATE__,vbuf);
+    mexPrintf(" LEVMAR: Levenberg-Marquardt Nonlinear Least Squares in C/C++ [v%s]\n",LM_VERSION);
+    PRINT_BUILD_INFO;
     mexPrintf("  - Released under the GNU General Public License: http://www.gnu.org/copyleft/gpl.html\n");
     mexPrintf("  - Source available from: http://www.ics.forth.gr/~lourakis/levmar/\n\n");
     

@@ -118,6 +118,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
         else {
             sprintf(msgbuf,"%d.%d.%d",SCIPmajorVersion(),SCIPminorVersion(),SCIPtechVersion());
             plhs[0] = mxCreateString(msgbuf);
+            plhs[1] = mxCreateDoubleScalar(OPTI_VER);
         }
         return;
     }        
@@ -169,6 +170,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
         //Check for gams/cip writing mode
         getStrOption(OPTS,"gamsfile",gamsfile);
         getStrOption(OPTS,"cipfile",cipfile);
+        CheckOptiVersion(OPTS);
     }       
 
     //Create Outputs
@@ -1063,9 +1065,9 @@ void processUserOpts(SCIP *scip, mxArray *opts)
 //Print Solver Information
 void printSolverInfo()
 {    
-    char vbuf[6]; getVSVer(vbuf); 
     mexPrintf("\n-----------------------------------------------------------\n");
-    mexPrintf(" SCIP: Solving Constraint Integer Programs [v%d.%d.%d, Built %s, VS%s]\n",SCIPmajorVersion(),SCIPminorVersion(),SCIPtechVersion(),__DATE__,vbuf);
+    mexPrintf(" SCIP: Solving Constraint Integer Programs [v%d.%d.%d]\n",SCIPmajorVersion(),SCIPminorVersion(),SCIPtechVersion());
+    PRINT_BUILD_INFO;
     mexPrintf("  - Released under the ZIB Academic License: http://scip.zib.de/academic.txt\n");
     mexPrintf("  - Source available from: http://scip.zib.de/\n\n");
     

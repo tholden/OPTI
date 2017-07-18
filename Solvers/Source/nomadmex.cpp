@@ -429,6 +429,9 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
             iterF.prhs[2] = mxCreateDoubleMatrix(1,1,mxREAL);
             iterF.prhs[3] = mxCreateDoubleMatrix(ndec,1,mxREAL);
         }
+        #ifdef OPTI_VERSION
+            CheckOptiVersion(pOPTS);
+        #endif
     }     
     
     //Create Outputs (note x and fval created below, due to allowing bi-objective)
@@ -939,7 +942,10 @@ int checkInputs(const mxArray *prhs[], int nrhs, mxArray *plhs[], int nlhs)
         if(nlhs < 1)
             printSolverInfo();
         else
+        {
             plhs[0] = mxCreateString(NOMAD::VERSION.c_str()); 
+            plhs[1] = mxCreateDoubleScalar(OPTI_VER);
+        }
         return 0;
     }
     
@@ -1218,6 +1224,8 @@ bool isNMDOption(const char *field)
     if(!strcmp(field,"param_file"))
         return false;
     else if(!strcmp(field,"iterfun"))
+        return false;  
+    else if(!strcmp(field,"optiver"))
         return false;
     #ifdef OPTI_VERSION
     else if(!strcmp(field,"bb_output_type"))
@@ -1273,8 +1281,8 @@ void printSolverInfo()
 {    
     mexPrintf("\n-----------------------------------------------------------\n");
     #ifdef OPTI_VERSION
-        char vbuf[6]; getVSVer(vbuf); 
-        mexPrintf(" NOMAD: Nonlinear Optimization using the MADS Algorithm [v%s, Built %s, VS%s]\n",NOMAD::VERSION.c_str(),__DATE__,vbuf);
+        mexPrintf(" NOMAD: Nonlinear Optimization using the MADS Algorithm [v%s]\n",NOMAD::VERSION.c_str());
+        PRINT_BUILD_INFO;
     #else
         mexPrintf(" NOMAD: Nonlinear Optimization using the MADS Algorithm [v%s, Built %s]\n",NOMAD::VERSION.c_str(),__DATE__);              
     #endif

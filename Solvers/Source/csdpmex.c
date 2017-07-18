@@ -100,7 +100,10 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
         if(nlhs < 1)
             printSolverInfo();
         else
+        {
             plhs[0] = mxCreateString(CSDP_VERSION);
+            plhs[1] = mxCreateDoubleScalar(OPTI_VER);
+        }
         return;
     }        
     
@@ -345,6 +348,7 @@ void mexFunction(int nlhs, mxArray *plhs[],int nrhs, const mxArray *prhs[])
         GetIntegerOption(pOPTS,"tweakgap",&params.tweakgap); 
         GetIntegerOption(pOPTS,"affine",&params.affine);
         GetDoubleOption(pOPTS,"perturbobj",&params.perturbobj);
+        CheckOptiVersion(pOPTS);
         //Optionally write problem to a SDPA sparse file
         if(mxGetField(pOPTS,0,"writeprob") && !mxIsEmpty(mxGetField(pOPTS,0,"writeprob")) && mxIsChar(mxGetField(pOPTS,0,"writeprob"))) {
             mxGetString(mxGetField(pOPTS,0,"writeprob"),msgbuf,1024);
@@ -908,10 +912,10 @@ int user_exit(int n, int k, struct blockmatrix C, double *a, double dobj, double
 
 //Print Solver Information
 void printSolverInfo()
-{    
-    char vbuf[6]; getVSVer(vbuf);    
+{       
     mexPrintf("\n-----------------------------------------------------------\n");
-    mexPrintf(" CSDP: A C Library for Semidefinite Programming [v%s, Built %s, VS%s]\n",CSDP_VERSION,__DATE__,vbuf);
+    mexPrintf(" CSDP: A C Library for Semidefinite Programming [v%s]\n",CSDP_VERSION);
+    PRINT_BUILD_INFO;
     mexPrintf("  - Released under the Eclipse Public License: http://opensource.org/licenses/eclipse-1.0\n");
     mexPrintf("  - Source available from: https://projects.coin-or.org/Csdp/\n\n");
     

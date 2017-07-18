@@ -5,9 +5,17 @@ function current_version = optiver
 
 %   Copyright (C) 2011-2017 Jonathan Currie (IPL)
 
-current_version = 2.25;
+current_version = 2.27;
 
 %History
+
+%2.27 (10/07/17)
+% - Substantial update to OPTI installer, should be much more user friendly
+% now (feedback welcome)
+
+%2.26 (02/07/17)
+% - Removed MEX files from Git repository (just getting bigger and bigger)
+% - Added functionality to installer to download MEX files
 
 %2.25 (24/06/17)
 % - Removed HTML documentation (problems with R2016b+ help index)

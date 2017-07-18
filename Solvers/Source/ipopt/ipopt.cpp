@@ -54,7 +54,10 @@ void mexFunction (int nlhs, mxArray *plhs[],
         if(nlhs < 1)
             printSolverInfo();
         else
+        {
             plhs[0] = mxCreateString(IPOPT_VERSION);  
+            plhs[1] = mxCreateDoubleScalar(OPTI_VER);
+        }
         return;
     }
     if (nrhs != 3)
@@ -75,6 +78,7 @@ void mexFunction (int nlhs, mxArray *plhs[],
     // Create a new IPOPT application object and process the options.
     IpoptApplication app(false);
     Options          options(x0,app,prhs[2]);
+    CheckOptiVersion(prhs[2]);
 
     // The first output argument is the value of the optimization
     // variables obtained at the solution.
@@ -184,9 +188,9 @@ void mexFunction (int nlhs, mxArray *plhs[],
 //Print Solver Information
 void printSolverInfo()
 {    
-    char vbuf[6]; getVSVer(vbuf); 
     mexPrintf("\n-----------------------------------------------------------\n");
-    mexPrintf(" IPOPT: Interior Point Optimizer [v%s, Built %s, VS%s]\n",IPOPT_VERSION,__DATE__,vbuf);
+    mexPrintf(" IPOPT: Interior Point Optimizer [v%s]\n",IPOPT_VERSION);
+    PRINT_BUILD_INFO;
     mexPrintf("  - Released under the Eclipse Public License: http://opensource.org/licenses/eclipse-1.0\n");
     mexPrintf("  - Source available from: https://projects.coin-or.org/Ipopt\n\n");
     
