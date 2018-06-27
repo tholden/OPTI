@@ -4,8 +4,6 @@
 
 % Run the entire file by using F5
 
-% CHECK NLP26 with 3.1.0
-
 %Check SCIP is available
 if(~optiSolver('SCIP',0))
     fprintf(2,'\n\nSCIP IS NOT AVAILABLE, NO SCIP TESTS CAN BE RUN\n\n');
@@ -17,7 +15,7 @@ end
 
 i = 1;
 clear fval fmin
-opts = optiset('display','iter');
+opts = optiset('display','iter','maxtime',30);
 
 %% NLP1
 clc

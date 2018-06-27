@@ -117,7 +117,11 @@ if(~isempty(prob.fun) && isempty(prob.f))
         if(warn > 1), optiwarn('opti:mkljac','OPTI will use MKLJAC (Numerical Difference Algorithm) for the Objective Gradient Function'); end
         %Check for Data fitting problem
         if(~isempty(prob.ydata))
-            prob.f = @(x) mklJac(prob.fun,x,length(prob.ydata));
+            if (nargin(prob.fun) == 2)
+                prob.f = @(x) mklJac(@(x) prob.fun(x,prob.xdata),x); 
+            else
+                prob.f = @(x) mklJac(prob.fun,x,length(prob.ydata));
+            end
         %Normal objective, single row
         else
             prob.f = @(x) mklJac(prob.fun,x,1);
@@ -1507,6 +1511,8 @@ switch(nargin)
         elseif(isstruct(varargin{1}))
             prob = optiprob(varargin{1});
             opts = optiset(); %default opts
+        elseif (isa(varargin{1},'optim.problemdef.OptimizationProblem'))
+            [prob,opts] = convertMatlabOptimProbToOptiProb(varargin{1});
         elseif(isa(varargin{1},'opti'))
             error('opti(optiObj) is not implemented');
         elseif(ischar(varargin{1}))
@@ -1523,6 +1529,8 @@ switch(nargin)
         if(isstruct(varargin{1}) && isstruct(varargin{2}))
             prob = optiprob(varargin{1});
             opts = optiset(varargin{2});
+        elseif (isa(varargin{1},'optim.problemdef.OptimizationProblem'))
+            [prob,opts] = convertMatlabOptimProbToOptiProb(varargin{1},varargin{2});
         elseif(ischar(varargin{1}))
             if(~isempty(strfind(varargin{1},'.'))) %filename
                 if(isstruct(varargin{2}))
@@ -1742,5 +1750,27 @@ if(chkHess)
         optiHessCheck(prob.H,prob.f,prob.nljac,x0,'Hessian',warn,prob.Hstr()); 
     end
 end
+
+
+% R2017b+ - See https://au.mathworks.com/help/optim/problem-based-lp-milp.html
+function [prob,opts] = convertMatlabOptimProbToOptiProb(inProb, inOpts)
+
+if (nargin < 2), inOpts = []; end
+opts = optiset(inOpts);
+
+try
+    mlProb = prob2struct(inProb);
+catch ME
+    error('Error calling prob2struct on Optimization Problem - check the original problem for errors\n\n%s',ME.message);
+end
+
+% Convert known fields
+prob = optiprob('f', mlProb.f, ...
+                'objbias', mlProb.f0, ...
+                'ineq', mlProb.Aineq, mlProb.bineq, ...
+                'eq', mlProb.Aeq, mlProb.beq, ...
+                'bounds', mlProb.lb, mlProb.ub, ...
+                'int', mlProb.intcon);
+
 
     

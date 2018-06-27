@@ -2,14 +2,14 @@
  * Released Under the BSD 3-Clause License:
  * https://www.inverseproblem.co.nz/OPTI/index.php/DL/License
  *
- * Copyright (C) Jonathan Currie 2013
+ * Copyright (C) Jonathan Currie 2018
  * www.inverseproblem.co.nz
  */
 
 
 #include "mex.h"
 #include <time.h>
-#include "opti_util.h"
+#include "opti_build_utils.h"
 
 #ifdef LINK_MKL
     #include "mkl.h"

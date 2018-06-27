@@ -3,15 +3,26 @@ function current_version = optiver
 %  Return OPTI software version. This file also contains version update
 %  information.
 
-%   Copyright (C) 2011-2017 Jonathan Currie (IPL)
+%   Copyright (C) 2011-2018 Jonathan Currie (IPL)
 
 current_version = 2.27;
 
 %History
 
-%2.28 (...)
+%2.29 (...)
+% - Added filterSQP v2001/08/17 as an NLP solver to SCIP
+
+%2.28 (04/03/18)
 % - Added option to installer to allow users to bypass auto download of mex
-% files and specfify location manually
+% files and specify location manually
+% - Added emphasis setting options to scip/scipset
+% - Added GNU Scientific Library MEX Interface (v2.4, NLS)
+% - Rebuilt all solvers against MKL v2018.0 R1
+% - Updated CLP to v1.16.11
+% - Updated CBC to v2.9.9
+% - Updated IPOPT to v3.12.9
+% - Updated BONMIN to v1.8.6
+% - Updated SCIP to v5.0.1
 
 %2.27 (10/07/17)
 % - Substantial update to OPTI installer, should be much more user friendly
