@@ -5,7 +5,7 @@ function current_version = optiver
 
 %   Copyright (C) 2011-2018 Jonathan Currie (IPL)
 
-current_version = 2.27;
+current_version = 2.28;
 
 %History
 
