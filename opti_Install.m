@@ -1,12 +1,11 @@
-function opti_Install(savePath,runTests,openBrowser, getMexFiles)
+function opti_Install(savePath,runTests,openBrowser)
 % OPTI Toolbox Installation File
 %
-%  opti_Install(savePath, runTests, openBrowser, getMexFiles)
+%  opti_Install(savePath, runTests, openBrowser)
 %
 %   savePath: Save the paths added by OPTI to the MATLAB path 
 %   runTests: Run the post-installation tests 
 %   openBrowser: Whether to open the OPTI Toolbox Website after installation 
-%   getMexFiles: Whether to attempt to download or request to download mex files (if not found)
 %
 % All arguments are optional and if not supplied, the user will be prompted
 % to enter their selection in the MATLAB Command Window. True is the
@@ -18,7 +17,6 @@ function opti_Install(savePath,runTests,openBrowser, getMexFiles)
 %   https://inverseproblem.co.nz/OPTI/
 
 % Handle missing input args
-if (nargin < 4 || isempty(getMexFiles)), getMexFiles = true; end
 if (nargin < 3), openBrowser = []; end
 if (nargin < 2), runTests = []; end
 if (nargin < 1), savePath = []; end
@@ -49,10 +47,8 @@ else
 end
 
 % Perform MEX File check (also checks pre-reqs)
-if (getMexFiles == true)
-    if (~mexFileCheck(localVer, cpath))
-        return;
-    end
+if (~mexFileCheck(localVer, cpath))
+    return;
 end
 
 %Add toolbox path to MATLAB
@@ -69,7 +65,6 @@ rInd{:,:,i} = strfind(genp,'tex'); i = i + 1;
 rInd{:,:,i} = strfind(genp,'.git'); i = i + 1;
 rInd{:,:,i} = strfind(genp,'Crash Files'); i = i + 1;
 rInd{:,:,i} = strfind(genp,'mexopts'); i = i + 1;
-rInd{:,:,i} = strfind(genp,'CI'); i = i + 1;
 if(~exist([cd '\Solvers\Source\lib\win32\libclp.lib'],'file'))
     rInd{:,:,i} = strfind(genp,'Development'); i = i + 1;
 end
